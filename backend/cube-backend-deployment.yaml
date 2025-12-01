@@ -1,22 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cube-frontend
+  name: cube-backend
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: cube-frontend
+      app: cube-backend
   template:
     metadata:
       labels:
-        app: cube-frontend
+        app: cube-backend
     spec:
       containers:
-      - name: cube-frontend
-        image: ghcr.io/hashgo44/cube-frontend:latest
+      - name: cube-backend
+        image: ghcr.io/hashgo44/cube-backend:latest
         ports:
-        - containerPort: 3000
+        - containerPort: 8000
+        env:
+          - name: DATABASE_URL
+            value: "postgresql+psycopg://postgres:password@postgresql-access:5432/postgres"
         resources:
           requests:
             cpu: 100m
@@ -28,11 +31,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: cube-frontend-service
+  name: cube-backend-service
 spec:
   selector:
-    app: cube-frontend
+    app: cube-backend
   ports:
     - protocol: TCP
-      port: 90
-      targetPort: 3000
+      port: 8000
+      targetPort: 8000
