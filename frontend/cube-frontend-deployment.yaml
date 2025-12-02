@@ -17,6 +17,9 @@ spec:
         image: ghcr.io/hashgo44/cube-frontend:latest
         ports:
         - containerPort: 3000
+        env:
+          - name: BACKEND_URL
+            value: "http://cube-backend-service:8000"
         resources:
           requests:
             cpu: 100m
